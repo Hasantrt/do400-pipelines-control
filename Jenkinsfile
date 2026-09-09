@@ -4,9 +4,11 @@ pipeline {
             label 'nodejs'
         }
     }
+    
     parameters {
         booleanParam(name: "RUN_FRONTEND_TESTS", defaultValue: true)
     }
+    
     stages {
         stage('Run Tests') {
             parallel {
@@ -15,6 +17,7 @@ pipeline {
                         sh 'node ./backend/test.js'
                     }
                 }
+                
                 stage('Deploy') {
                     when {
                         expression { env.GIT_BRANCH == 'origin/main' }
@@ -23,5 +26,7 @@ pipeline {
                         echo 'Deploying...'
                     }
                 }
-            }  
-       }
+            }
+        }
+    }
+}
